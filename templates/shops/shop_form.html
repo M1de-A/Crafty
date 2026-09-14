@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} · Crafty{% endblock %}
+{% block content %}
+<section class="dashboard narrow-form">
+  <span class="eyebrow">МОЙ МАГАЗИН</span><h1>{{ title }}</h1>
+  <form method="post" enctype="multipart/form-data" class="form-card">{% csrf_token %}{{ form.non_field_errors }}
+    {% for field in form %}<label>{{ field.label }}{{ field }}{% if field.errors %}<small class="error">{{ field.errors|striptags }}</small>{% endif %}</label>{% endfor %}
+    <button class="btn primary" type="submit">Сохранить магазин</button>
+  </form>
+</section>
+{% endblock %}

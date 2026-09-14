@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} · Crafty{% endblock %}
+{% block content %}
+<section class="dashboard narrow-form">
+  <span class="eyebrow">{% if CRAFTY_LANGUAGE == 'en' %}PRODUCT{% else %}ТОВАР{% endif %}</span><h1>{{ title }}</h1>
+  <form method="post" enctype="multipart/form-data" class="form-card">{% csrf_token %}{{ form.non_field_errors }}
+    {% for field in form %}<label>{{ field.label }}{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{% if field.errors %}<small class="error">{{ field.errors|striptags }}</small>{% endif %}</label>{% endfor %}
+    <button class="btn primary" type="submit">{% if CRAFTY_LANGUAGE == 'en' %}Save product{% else %}Сохранить товар{% endif %}</button>
+  </form>
+</section>
+{% endblock %}

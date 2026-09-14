@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Удаление товара · Crafty{% endblock %}
+{% block content %}
+<section class="dashboard narrow-form"><span class="eyebrow">{% if CRAFTY_LANGUAGE == 'en' %}PRODUCT{% else %}ТОВАР{% endif %}</span><h1>{% if CRAFTY_LANGUAGE == 'en' %}Delete{% else %}Удалить{% endif %} «{{ product.name }}»?</h1><p class="lead">Это действие нельзя отменить.</p><form method="post" class="action-card">{% csrf_token %}<button class="btn danger" type="submit">{% if CRAFTY_LANGUAGE == 'en' %}Delete{% else %}Удалить{% endif %} товар</button> <a class="btn secondary" href="{% url 'seller_dashboard' %}">Отмена</a></form></section>
+{% endblock %}

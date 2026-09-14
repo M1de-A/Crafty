@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Стать продавцом · Crafty{% endblock %}
+{% block content %}
+<section class="dashboard seller-onboarding">
+  <span class="eyebrow">{% if CRAFTY_LANGUAGE == 'en' %}FOR MAKERS{% else %}ДЛЯ МАСТЕРОВ{% endif %}</span>
+  <h1>Откройте свою витрину на Crafty.</h1>
+  <p class="lead">Показывайте авторские работы, собирайте аудиторию и постепенно развивайте свой магазин.</p>
+  <div class="benefit-grid">
+    <div><b>5</b><span>бесплатных витрин на старте</span></div>
+    <div><b>✓</b><span>будущая верификация магазина</span></div>
+    <div><b>↗</b><span>инструменты продвижения</span></div>
+  </div>
+  <form method="post" class="action-card">{% csrf_token %}<p>После продолжения вы сможете создать название и описание магазина.</p><button class="btn primary" type="submit">Стать продавцом →</button></form>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% load static %}<!doctype html>
+<html lang="{{ CRAFTY_LANGUAGE }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Crafty{% endblock %}</title>
+  <meta name="description" content="Crafty — маркетплейс авторских товаров и российских мастеров.">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="Crafty">
+      <span class="brand-mark">✦</span><span>crafty</span>
+    </a>
+    <form class="search" action="/catalog/" method="get">
+      <span class="search-icon">⌕</span>
+      <input name="q" placeholder="{% if CRAFTY_LANGUAGE == 'en' %}Search products, makers and ideas{% else %}Поиск товаров, мастеров и идей{% endif %}" value="{{ request.GET.q|default:'' }}">
+      <button type="submit">{% if CRAFTY_LANGUAGE == 'en' %}Search{% else %}Найти{% endif %}</button>
+    </form>
+    <div class="preferences"><form method="post" action="/preferences/language/" class="pref-form">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><select name="language" onchange="this.form.submit()" aria-label="Язык">{% for code,label in LANGUAGES_AVAILABLE %}<option value="{{ code }}" {% if code == CRAFTY_LANGUAGE %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form><form method="post" action="/preferences/currency/" class="pref-form">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><select name="currency" onchange="this.form.submit()" aria-label="Валюта">{% for code,label in CURRENCIES_AVAILABLE %}<option value="{{ code }}" {% if code == CRAFTY_CURRENCY %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form></div><nav class="top-nav">
+      <a class="icon-link" href="/catalog/">{% if CRAFTY_LANGUAGE == 'en' %}Catalog{% else %}Каталог{% endif %}</a>
+      {% if user.is_authenticated %}
+        {% if user.is_superuser %}<a class="icon-link" href="/admin/">Админ-панель</a>{% else %}<a class="icon-link" href="/orders/">{% if CRAFTY_LANGUAGE == 'en' %}Orders{% else %}Заказы{% endif %}</a><a class="header-tools" href="/orders/cart/" aria-label="Корзина" title="Корзина">🛒{% if CART_COUNT %}<span class="cart-count">{{ CART_COUNT }}</span>{% endif %}</a><a class="header-tools" href="/account/" aria-label="Профиль" title="Профиль">{% if user.profile.avatar %}<img class="header-avatar" src="{{ user.profile.avatar.url }}" alt="">{% else %}◯{% endif %}</a><details class="account-menu"><summary>Ещё</summary><div class="account-dropdown"><a href="/social/favorites/">♡ Избранное{% if FAVORITE_COUNT %} <span class="cart-count">{{ FAVORITE_COUNT }}</span>{% endif %}</a><a href="/social/shops/followed/">＋ Мои магазины{% if FOLLOWED_SHOP_COUNT %} <span class="cart-count">{{ FOLLOWED_SHOP_COUNT }}</span>{% endif %}</a><a href="/account/">Профиль</a></div></details><a class="icon-link desktop-account" href="/account/">{% if CRAFTY_LANGUAGE == 'en' %}Profile{% else %}Профиль{% endif %}</a>{% endif %}
+        <form class="inline" action="/account/logout/" method="post">{% csrf_token %}<button class="plain-btn">{% if CRAFTY_LANGUAGE == 'en' %}Log out{% else %}Выйти{% endif %}</button></form>
+      {% else %}
+        <a class="icon-link" href="/account/login/">{% if CRAFTY_LANGUAGE == 'en' %}Log in{% else %}Войти{% endif %}</a>
+        <a class="header-cta" href="/account/register/">{% if CRAFTY_LANGUAGE == 'en' %}Become a seller{% else %}Стать продавцом{% endif %}</a>
+      {% endif %}
+    </nav>
+  </div>
+  <div class="category-bar">
+    <div class="category-inner">
+      <a class="catalog-pill" href="/catalog/">☰ &nbsp;{% if CRAFTY_LANGUAGE == 'en' %}Catalog{% else %}Каталог{% endif %}</a>
+      <a href="/catalog/?category=jewelry">{% if CRAFTY_LANGUAGE == 'en' %}Jewelry{% else %}Украшения{% endif %}</a>
+      <a href="/catalog/?category=home">{% if CRAFTY_LANGUAGE == 'en' %}Home &amp; decor{% else %}Дом и интерьер{% endif %}</a>
+      <a href="/catalog/?category=clothes">{% if CRAFTY_LANGUAGE == 'en' %}Clothing{% else %}Одежда{% endif %}</a>
+      <a href="/catalog/?category=ceramics">{% if CRAFTY_LANGUAGE == 'en' %}Ceramics{% else %}Керамика{% endif %}</a>
+      <a href="/catalog/?category=art">{% if CRAFTY_LANGUAGE == 'en' %}Art{% else %}Искусство{% endif %}</a>
+      <a href="/catalog/?category=gifts">{% if CRAFTY_LANGUAGE == 'en' %}Gifts{% else %}Подарки{% endif %}</a>
+      <a href="/catalog/">{% if CRAFTY_LANGUAGE == 'en' %}More{% else %}Ещё{% endif %}&nbsp;⌄</a>
+    </div>
+  </div>
+</header>
+<main>{% block content %}{% endblock %}</main>
+<footer class="footer"><div class="footer-inner"><div><div class="brand footer-brand"><span class="brand-mark">✦</span><span>crafty</span></div><p>Маркетплейс вещей с характером.</p></div><div><b>Покупателям</b><a href="/catalog/">{% if CRAFTY_LANGUAGE == 'en' %}Catalog{% else %}Каталог{% endif %}</a><a href="/orders/">{% if CRAFTY_LANGUAGE == 'en' %}Orders{% else %}Заказы{% endif %}</a></div><div><b>Мастерам</b><a href="/account/register/">Открыть магазин</a><a href="/admin/">Вход для команды</a></div></div><div class="footer-bottom">© Crafty · авторские товары и независимые мастера</div></footer>
+<script src="{% static 'js/main.js' %}"></script>{% block extra_js %}{% endblock %}</body></html>
